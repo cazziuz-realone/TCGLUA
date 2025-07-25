@@ -1,0 +1,191 @@
+-- Main Menu GUI Script
+-- Handles the main menu interface for SpireSmiths TCG
+
+local logger = require "scripts.utils.logger"
+
+local M = {}
+
+-- Button states
+local BUTTON_STATES = {
+    NORMAL = "normal",
+    HOVER = "hover",
+    PRESSED = "pressed"
+}
+
+-- Button configurations
+local buttons = {
+    play_button = {
+        node = "play_button",
+        text_node = "play_text",
+        normal_color = vmath.vector4(0.2, 0.6, 1.0, 1.0),
+        hover_color = vmath.vector4(0.3, 0.7, 1.0, 1.0),
+        pressed_color = vmath.vector4(0.1, 0.5, 0.9, 1.0),
+        action = "start_game"
+    },
+    deck_builder_button = {
+        node = "deck_builder_button",
+        text_node = "deck_builder_text",
+        normal_color = vmath.vector4(0.6, 0.2, 1.0, 1.0),
+        hover_color = vmath.vector4(0.7, 0.3, 1.0, 1.0),
+        pressed_color = vmath.vector4(0.5, 0.1, 0.9, 1.0),
+        action = "open_deck_builder"
+    },
+    quit_button = {
+        node = "quit_button",
+        text_node = "quit_text",
+        normal_color = vmath.vector4(0.8, 0.4, 0.1, 1.0),
+        hover_color = vmath.vector4(0.9, 0.5, 0.2, 1.0),
+        pressed_color = vmath.vector4(0.7, 0.3, 0.05, 1.0),
+        action = "quit_game"
+    }
+}
+
+-- Current button states
+local button_states = {}
+
+function init(self)
+    logger.info("Main Menu initialized")
+    
+    -- Initialize button states
+    for button_id, button_config in pairs(buttons) do
+        button_states[button_id] = BUTTON_STATES.NORMAL
+        gui.set_color(gui.get_node(button_config.node), button_config.normal_color)
+    end
+    
+    -- Set up input handling
+    msg.post(".", "acquire_input_focus")
+    
+    -- Animate title entrance
+    animate_title_entrance()
+end
+
+function final(self)
+    logger.info("Main Menu finalized")
+    msg.post(".", "release_input_focus")
+end
+
+function on_input(self, action_id, action)
+    if action_id == hash("click") or action_id == hash("touch") then
+        if action.pressed then
+            return handle_button_press(action.x, action.y)
+        elseif action.released then
+            return handle_button_release(action.x, action.y)
+        end
+    end
+    
+    -- Handle mouse movement for hover effects
+    if not action_id then
+        handle_mouse_move(action.x, action.y)
+    end
+    
+    return false
+end
+
+-- Handle button press
+function handle_button_press(x, y)
+    for button_id, button_config in pairs(buttons) do
+        local node = gui.get_node(button_config.node)
+        if gui.pick_node(node, x, y) then
+            set_button_state(button_id, BUTTON_STATES.PRESSED)
+            return true
+        end
+    end
+    return false
+end
+
+-- Handle button release
+function handle_button_release(x, y)
+    for button_id, button_config in pairs(buttons) do
+        local node = gui.get_node(button_config.node)
+        if gui.pick_node(node, x, y) and button_states[button_id] == BUTTON_STATES.PRESSED then
+            -- Button was clicked
+            set_button_state(button_id, BUTTON_STATES.HOVER)
+            execute_button_action(button_config.action)
+            return true
+        else
+            -- Reset button state
+            set_button_state(button_id, BUTTON_STATES.NORMAL)
+        end
+    end
+    return false
+end
+
+-- Handle mouse movement for hover effects
+function handle_mouse_move(x, y)
+    for button_id, button_config in pairs(buttons) do
+        local node = gui.get_node(button_config.node)
+        if gui.pick_node(node, x, y) then
+            if button_states[button_id] == BUTTON_STATES.NORMAL then
+                set_button_state(button_id, BUTTON_STATES.HOVER)
+            end
+        else
+            if button_states[button_id] == BUTTON_STATES.HOVER then
+                set_button_state(button_id, BUTTON_STATES.NORMAL)
+            end
+        end
+    end
+end
+
+-- Set button visual state
+function set_button_state(button_id, state)
+    local button_config = buttons[button_id]
+    if not button_config then return end
+    
+    button_states[button_id] = state
+    
+    local color
+    if state == BUTTON_STATES.NORMAL then
+        color = button_config.normal_color
+    elseif state == BUTTON_STATES.HOVER then
+        color = button_config.hover_color
+    elseif state == BUTTON_STATES.PRESSED then
+        color = button_config.pressed_color
+    end
+    
+    if color then
+        local node = gui.get_node(button_config.node)
+        gui.animate(node, gui.PROP_COLOR, color, gui.EASING_OUTQUAD, 0.1)
+    end
+end
+
+-- Execute button action
+function execute_button_action(action)
+    logger.info("Executing action: " .. action)
+    
+    if action == "start_game" then
+        -- Send message to game controller to start a new game
+        msg.post("/game_controller#game_controller", "start_game", {
+            player_name = "Player",
+            ai_difficulty = "medium"
+        })
+    elseif action == "open_deck_builder" then
+        -- Send message to open deck builder
+        msg.post("/game_controller#game_controller", "open_deck_builder")
+    elseif action == "quit_game" then
+        -- Send message to quit the game
+        msg.post("/game_controller#game_controller", "quit_game")
+    end
+end
+
+-- Animate title entrance
+function animate_title_entrance()
+    local title_node = gui.get_node("title")
+    local original_scale = gui.get_scale(title_node)
+    
+    -- Start with larger scale
+    gui.set_scale(title_node, original_scale * 1.5)
+    
+    -- Animate to normal scale
+    gui.animate(title_node, gui.PROP_SCALE, original_scale, gui.EASING_OUTBOUNCE, 1.0)
+    
+    -- Pulse effect
+    local function pulse()
+        gui.animate(title_node, gui.PROP_SCALE, original_scale * 1.1, gui.EASING_INOUTQUAD, 2.0, 0, function()
+            gui.animate(title_node, gui.PROP_SCALE, original_scale, gui.EASING_INOUTQUAD, 2.0, 0, pulse)
+        end)
+    end
+    
+    timer.delay(1.5, false, pulse)
+end
+
+return M
