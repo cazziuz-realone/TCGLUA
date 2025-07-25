@@ -7,16 +7,16 @@ SpireSmiths TCG is a Trading Card Game developed using the Defold game engine wi
 
 ## Recent Development Activity
 
-### Latest Commit (July 25, 2025 - 16:38:14 UTC)
-**Commit:** `fa8f1a586a2e3a7eb559b4852cb7364b256d6d83`
-**Message:** "Add Git LFS configuration for game assets"
+### Latest Commit (July 25, 2025 - 18:14:45 UTC)
+**Commit:** `5fb2a6db767cdfae7e077eeecf521e4773b87d7b`
+**Message:** "Add comprehensive asset naming conventions guide"
 
 **Previous Commits:**
+- **16:39:11 UTC:** "Update handoff with Git LFS asset management information"
+- **16:38:14 UTC:** "Add Git LFS configuration for game assets"
 - **16:37:54 UTC:** "Add Git LFS setup guide for game assets"
 - **16:31:30 UTC:** "Update handoff documentation with visual assets information"
 - **16:30:42 UTC:** "Add comprehensive visual assets requirements documentation"
-- **16:19:01 UTC:** "Add project handoff documentation"
-- **08:36:38 UTC:** "Add GUI components, scene management, input handling, AI system and card database"
 
 ## Current Architecture
 
@@ -87,7 +87,8 @@ SpireSmiths TCG is a Trading Card Game developed using the Defold game engine wi
 #### 9. Asset Management System
 - **Git LFS Configuration:** Ready for large visual and audio assets
 - **Asset Pipeline:** Configured for efficient game asset storage
-- **Status:** ✅ Git LFS configured and ready
+- **Naming Conventions:** Comprehensive guidelines established
+- **Status:** ✅ Git LFS configured and naming standards ready
 
 ### Directory Structure
 ```
@@ -115,11 +116,18 @@ TCGLUA/
 ├── gui/ 
 │   ├── main_menu.gui (6.4KB) - Main menu interface
 │   └── main_menu.gui_script (5.8KB) - Menu logic
-├── graphics/ (ready for assets)
+├── graphics/ (ready for assets with naming conventions)
 │   ├── ui/ (small assets - regular Git)
+│   │   ├── buttons/ (btn_[purpose]_[state].png)
+│   │   ├── icons/ (icon_[purpose]_[size].png)
+│   │   ├── panels/ (panel_[purpose]_[size].png)
+│   │   └── fonts/ (font_[style]_[weight].ttf)
 │   ├── cards/ (large assets - Git LFS)
-│   ├── backgrounds/ (large assets - Git LFS)
-│   └── atlas/ (compiled atlases - Git LFS)
+│   │   ├── frames/ (frame_[rarity]_[type].png)
+│   │   ├── art/ (card_[category]_[name].png)
+│   │   └── backs/ (cardback_[theme].png)
+│   ├── backgrounds/ (bg_[scene]_[variant].png)
+│   └── gameplay/ (token_[type], indicator_[purpose])
 ├── audio/ (ready for assets - Git LFS)
 ├── input/ - Input binding files
 ├── game.project (3.5KB) - Defold project configuration
@@ -127,7 +135,8 @@ TCGLUA/
 ├── README.md (5.8KB) - Project documentation
 ├── HANDOFF.md - Project handoff documentation
 ├── VISUAL_ASSETS_NEEDED.md - Visual requirements guide
-└── GIT_LFS_SETUP.md - Asset management guide
+├── GIT_LFS_SETUP.md - Asset management guide
+└── ASSET_NAMING_CONVENTIONS.md - Asset naming standards
 ```
 
 ## Current Implementation Status
@@ -145,6 +154,7 @@ TCGLUA/
 - Game event tracking
 - Basic GUI structure
 - **Git LFS configuration for assets**
+- **Asset naming conventions established**
 
 ### 🔄 Partially Implemented
 - **GUI Interfaces:** Basic main menu exists, using placeholder graphics
@@ -152,7 +162,7 @@ TCGLUA/
 - **Visual Assets:** Currently using Defold built-in placeholder graphics
 
 ### ❌ Not Yet Implemented
-- **Complete Visual Asset Set** - See VISUAL_ASSETS_NEEDED.md for details
+- **Complete Visual Asset Set** - Standards ready, assets needed
 - **Card Content and Balancing** - Database structure ready but cards need creation
 - **Audio System** - Placeholder in game controller
 - **Save/Load System** - Placeholder in game controller
@@ -168,42 +178,53 @@ The repository is now configured for efficient asset storage:
 - **Small Assets (Regular Git):** Small UI elements, fonts, code files in regular Git
 - **Ready for Development:** Artists and developers can add assets immediately
 
+### Asset Naming Conventions ✅
+Comprehensive naming standards established:
+- **Consistent Format:** lowercase_with_underscores
+- **Descriptive Prefixes:** btn_, icon_, card_, bg_, frame_
+- **State Suffixes:** _normal, _hover, _pressed, _disabled
+- **Category Organization:** Clear directory structure with purpose-based folders
+
+### Quick Naming Reference:
+```
+✅ btn_play_normal.png           # UI Button
+✅ card_character_fire_knight.png # Card Art
+✅ icon_mana_small.png          # UI Icon
+✅ bg_main_menu_default.png     # Background
+✅ frame_rare_spell.png         # Card Frame
+✅ font_title_bold.ttf          # Typography
+```
+
 ### To Add Visual Assets:
 1. **Install Git LFS:** `git lfs install` (one-time setup)
-2. **Add Assets:** Place files in appropriate directories
-3. **Commit Normally:** `git add graphics/` and `git commit`
-4. **Large files automatically handled by LFS**
+2. **Follow Naming Convention:** Use ASSET_NAMING_CONVENTIONS.md guide
+3. **Place in Correct Directory:** Organized by asset type and size
+4. **Add and Commit:** `git add graphics/` and `git commit`
+5. **Large files automatically handled by LFS**
 
-See **GIT_LFS_SETUP.md** for detailed instructions.
+## Demo Status
 
-## Visual Assets Current State
+### 🎮 **Runnable Demo Available**
+The project currently runs as a functional demo in Defold:
+- **Main Menu:** Working with placeholder graphics
+- **Scene Navigation:** Button clicks transition between game phases
+- **Input System:** Mouse and keyboard controls functional
+- **Game Loop:** Core systems operational
 
-The project currently uses basic Defold built-in assets:
-- Default system font for all text
-- Simple particle blob texture for buttons and backgrounds
-- Solid color rectangles for UI elements
+### 🎨 **Visual State**
+- Basic Defold built-in graphics (simple blob shapes)
+- Functional but needs visual polish
+- All systems ready for asset replacement
 
-**Ready for Asset Integration:**
-- Directory structure planned and ready
-- Git LFS configured for large files
-- Defold project structure supports immediate asset addition
-
-**Immediate Visual Needs:**
-1. **UI Textures** - Button backgrounds, panels, frames
-2. **Fonts** - Game-appropriate typography (fantasy/medieval style)
-3. **Card Frames** - Basic card border templates
-4. **Background Art** - Scene backgrounds for different game phases
-5. **Icons** - Mana symbols, status effects, card types
-
-See **VISUAL_ASSETS_NEEDED.md** for comprehensive visual requirements.
+See **ASSET_NAMING_CONVENTIONS.md** for detailed asset preparation guidelines.
 
 ## Next Development Priorities
 
 ### High Priority
-1. **Visual Asset Creation** - Replace placeholder graphics with game-appropriate art
-2. **Card Content Creation** - Populate card database with actual game cards
-3. **GUI Scene Implementation** - Create deck builder, gameplay, and other UI scenes
-4. **Asset Integration** - Add created assets to the configured Git LFS system
+1. **Visual Asset Creation** - Follow naming conventions from ASSET_NAMING_CONVENTIONS.md
+2. **Asset Integration** - Replace placeholder graphics with proper art
+3. **Card Content Creation** - Populate card database with actual game cards
+4. **GUI Scene Enhancement** - Improve visual quality of all interfaces
 
 ### Medium Priority
 1. **Save/Load System** - Implement persistent game data
@@ -227,11 +248,12 @@ See **VISUAL_ASSETS_NEEDED.md** for comprehensive visual requirements.
 - Follow Lua and Defold best practices
 
 ### Asset Integration
+- **Use established naming conventions** (see ASSET_NAMING_CONVENTIONS.md)
 - Use Git LFS for large assets (automatically configured)
 - Use Defold Atlas files for efficient sprite packing
 - Maintain consistent art style and color palette
 - Optimize textures for mobile compatibility
-- Follow naming conventions for easy asset management
+- Test asset loading in Defold before committing
 
 ### Testing Approach
 - Test core game mechanics thoroughly
@@ -239,6 +261,7 @@ See **VISUAL_ASSETS_NEEDED.md** for comprehensive visual requirements.
 - Ensure proper scene transitions
 - Test input handling across different scenarios
 - Validate game state consistency
+- Verify asset loading and display
 
 ## Known Issues & Technical Debt
 - GUI uses placeholder Defold built-in graphics
@@ -249,24 +272,26 @@ See **VISUAL_ASSETS_NEEDED.md** for comprehensive visual requirements.
 ## Documentation Files
 - **HANDOFF.md** - This project handoff document
 - **VISUAL_ASSETS_NEEDED.md** - Comprehensive visual requirements
+- **ASSET_NAMING_CONVENTIONS.md** - Detailed asset naming standards
 - **GIT_LFS_SETUP.md** - Asset management and Git LFS guide
 - **README.md** - General project information
 
 ## Repository Information
 - **Repository:** https://github.com/cazziuz-realone/TCGLUA
 - **Main Branch:** main
-- **Last Commit:** fa8f1a586a2e3a7eb559b4852cb7364b256d6d83
+- **Last Commit:** 5fb2a6db767cdfae7e077eeecf521e4773b87d7b
 - **License:** Not specified
 - **Contributors:** Cazziuz (argotzcreations@gmail.com)
 
 ---
 
-**Handoff Status:** Project has solid technical foundation and is ready for asset integration. Git LFS configured for efficient large file management.
+**Handoff Status:** Project has complete technical foundation with established asset management and naming standards. Ready for visual asset creation and integration.
 
 **Next Developer Notes:** 
 1. Install Git LFS locally: `git lfs install`
-2. Review VISUAL_ASSETS_NEEDED.md for art requirements
-3. Create or commission visual assets
-4. Add assets to appropriate directories (will auto-use LFS for large files)
-5. Populate card database with actual game content
-6. Implement remaining GUI scenes using new visual assets
+2. Review ASSET_NAMING_CONVENTIONS.md for proper file naming
+3. Create or commission visual assets following naming guidelines
+4. Place assets in appropriate directories (will auto-use LFS for large files)
+5. Test asset integration in Defold
+6. Populate card database with actual game content
+7. Enhance GUI scenes with new visual assets
