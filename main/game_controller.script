@@ -1,0 +1,218 @@
+local game_state = require "scripts.game.game_state"
+local scene_manager = require "scripts.ui.scene_manager"
+local input_manager = require "scripts.input.input_manager"
+local card_database = require "scripts.data.card_database"
+local logger = require "scripts.utils.logger"
+
+-- Game Controller - Main entry point for SpireSmiths TCG
+-- Handles overall game flow, scene transitions, and core systems
+
+local M = {}
+
+-- Game phases
+local GAME_PHASES = {
+    INIT = "init",
+    MAIN_MENU = "main_menu",
+    DECK_BUILDER = "deck_builder",
+    GAME_SETUP = "game_setup",
+    GAMEPLAY = "gameplay",
+    GAME_OVER = "game_over"
+}
+
+-- Current game phase
+local current_phase = GAME_PHASES.INIT
+
+-- Game controller state
+local controller_state = {
+    initialized = false,
+    game_instance = nil,
+    current_scene = nil
+}
+
+function init(self)
+    logger.info("SpireSmiths TCG - Initializing Game Controller")
+    
+    -- Initialize core systems
+    init_systems()
+    
+    -- Load game data
+    card_database.load()
+    
+    -- Set up input handling
+    msg.post(".", "acquire_input_focus")
+    
+    -- Initialize scene manager
+    scene_manager.init()
+    
+    -- Transition to main menu
+    transition_to_phase(GAME_PHASES.MAIN_MENU)
+    
+    controller_state.initialized = true
+    logger.info("Game Controller initialized successfully")
+end
+
+function final(self)
+    logger.info("Game Controller shutting down")
+    scene_manager.cleanup()
+end
+
+function update(self, dt)
+    if not controller_state.initialized then
+        return
+    end
+    
+    -- Update game state if in gameplay
+    if current_phase == GAME_PHASES.GAMEPLAY and controller_state.game_instance then
+        game_state.update(controller_state.game_instance, dt)
+    end
+    
+    -- Update scene manager
+    scene_manager.update(dt)
+end
+
+function on_message(self, message_id, message, sender)
+    if message_id == hash("start_game") then
+        start_new_game(message.player_name, message.ai_difficulty)
+    elseif message_id == hash("end_game") then
+        end_current_game()
+    elseif message_id == hash("return_to_menu") then
+        transition_to_phase(GAME_PHASES.MAIN_MENU)
+    elseif message_id == hash("open_deck_builder") then
+        transition_to_phase(GAME_PHASES.DECK_BUILDER)
+    elseif message_id == hash("quit_game") then
+        msg.post("@system:", "exit", {code = 0})
+    end
+end
+
+function on_input(self, action_id, action)
+    -- Delegate input to current scene through scene manager
+    if controller_state.current_scene then
+        return scene_manager.handle_input(action_id, action)
+    end
+    
+    -- Global input handling
+    if action_id == hash("key_escape") and action.pressed then
+        if current_phase == GAME_PHASES.GAMEPLAY then
+            -- Show pause menu
+            scene_manager.show_pause_menu()
+        elseif current_phase ~= GAME_PHASES.MAIN_MENU then
+            -- Return to main menu
+            transition_to_phase(GAME_PHASES.MAIN_MENU)
+        end
+        return true
+    end
+    
+    return false
+end
+
+-- Initialize core game systems
+function init_systems()
+    logger.info("Initializing core systems...")
+    
+    -- Set up random seed
+    math.randomseed(os.time())
+    
+    -- Initialize audio system
+    -- TODO: Initialize audio manager
+    
+    -- Initialize save system
+    -- TODO: Initialize save/load system
+    
+    logger.info("Core systems initialized")
+end
+
+-- Transition between game phases
+function transition_to_phase(new_phase)
+    logger.info("Transitioning from '" .. current_phase .. "' to '" .. new_phase .. "'")
+    
+    -- Clean up current phase
+    cleanup_current_phase()
+    
+    -- Set new phase
+    current_phase = new_phase
+    
+    -- Initialize new phase
+    init_new_phase(new_phase)
+end
+
+-- Clean up resources from current phase
+function cleanup_current_phase()
+    if current_phase == GAME_PHASES.GAMEPLAY then
+        if controller_state.game_instance then
+            game_state.cleanup(controller_state.game_instance)
+            controller_state.game_instance = nil
+        end
+    end
+    
+    -- Clean up current scene
+    if controller_state.current_scene then
+        scene_manager.unload_scene(controller_state.current_scene)
+        controller_state.current_scene = nil
+    end
+end
+
+-- Initialize new game phase
+function init_new_phase(phase)
+    if phase == GAME_PHASES.MAIN_MENU then
+        controller_state.current_scene = scene_manager.load_scene("main_menu")
+    elseif phase == GAME_PHASES.DECK_BUILDER then
+        controller_state.current_scene = scene_manager.load_scene("deck_builder")
+    elseif phase == GAME_PHASES.GAME_SETUP then
+        controller_state.current_scene = scene_manager.load_scene("game_setup")
+    elseif phase == GAME_PHASES.GAMEPLAY then
+        controller_state.current_scene = scene_manager.load_scene("gameplay")
+    elseif phase == GAME_PHASES.GAME_OVER then
+        controller_state.current_scene = scene_manager.load_scene("game_over")
+    end
+end
+
+-- Start a new game with specified parameters
+function start_new_game(player_name, ai_difficulty)
+    logger.info("Starting new game: Player=" .. (player_name or "Player") .. ", AI=" .. (ai_difficulty or "medium"))
+    
+    transition_to_phase(GAME_PHASES.GAME_SETUP)
+    
+    -- Create new game instance
+    controller_state.game_instance = game_state.create_new_game({
+        player_name = player_name or "Player",
+        ai_difficulty = ai_difficulty or "medium"
+    })
+    
+    -- Transition to gameplay after setup
+    timer.delay(1.0, false, function()
+        transition_to_phase(GAME_PHASES.GAMEPLAY)
+    end)
+end
+
+-- End the current game
+function end_current_game()
+    logger.info("Ending current game")
+    
+    if controller_state.game_instance then
+        -- Save game statistics
+        -- TODO: Implement game statistics saving
+        
+        -- Cleanup game state
+        game_state.cleanup(controller_state.game_instance)
+        controller_state.game_instance = nil
+    end
+    
+    transition_to_phase(GAME_PHASES.GAME_OVER)
+end
+
+-- Get current game phase
+function M.get_current_phase()
+    return current_phase
+end
+
+-- Get current game instance
+function M.get_game_instance()
+    return controller_state.game_instance
+end
+
+-- Check if game is in progress
+function M.is_game_active()
+    return current_phase == GAME_PHASES.GAMEPLAY and controller_state.game_instance ~= nil
+end
+
+return M

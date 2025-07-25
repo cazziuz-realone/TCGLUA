@@ -1,0 +1,172 @@
+key_trigger {
+  input: KEY_SPACE
+  action: "key_space"
+}
+key_trigger {
+  input: KEY_ENTER
+  action: "key_enter"
+}
+key_trigger {
+  input: KEY_ESC
+  action: "key_escape"
+}
+key_trigger {
+  input: KEY_1
+  action: "key_1"
+}
+key_trigger {
+  input: KEY_2
+  action: "key_2"
+}
+key_trigger {
+  input: KEY_3
+  action: "key_3"
+}
+key_trigger {
+  input: KEY_4
+  action: "key_4"
+}
+key_trigger {
+  input: KEY_5
+  action: "key_5"
+}
+key_trigger {
+  input: KEY_6
+  action: "key_6"
+}
+key_trigger {
+  input: KEY_7
+  action: "key_7"
+}
+key_trigger {
+  input: KEY_8
+  action: "key_8"
+}
+key_trigger {
+  input: KEY_9
+  action: "key_9"
+}
+key_trigger {
+  input: KEY_0
+  action: "key_0"
+}
+mouse_trigger {
+  input: MOUSE_BUTTON_LEFT
+  action: "click"
+}
+mouse_trigger {
+  input: MOUSE_BUTTON_RIGHT
+  action: "right_click"
+}
+mouse_trigger {
+  input: MOUSE_WHEEL_UP
+  action: "wheel_up"
+}
+mouse_trigger {
+  input: MOUSE_WHEEL_DOWN
+  action: "wheel_down"
+}
+touch_trigger {
+  input: TOUCH_MULTI
+  action: "touch"
+}
+key_trigger {
+  input: KEY_A
+  action: "key_a"
+}
+key_trigger {
+  input: KEY_D
+  action: "key_d"
+}
+key_trigger {
+  input: KEY_S
+  action: "key_s"
+}
+key_trigger {
+  input: KEY_W
+  action: "key_w"
+}
+key_trigger {
+  input: KEY_Q
+  action: "key_q"
+}
+key_trigger {
+  input: KEY_E
+  action: "key_e"
+}
+key_trigger {
+  input: KEY_TAB
+  action: "key_tab"
+}
+key_trigger {
+  input: KEY_LSHIFT
+  action: "key_shift"
+}
+key_trigger {
+  input: KEY_RSHIFT
+  action: "key_shift"
+}
+key_trigger {
+  input: KEY_LCTRL
+  action: "key_ctrl"
+}
+key_trigger {
+  input: KEY_RCTRL
+  action: "key_ctrl"
+}
+key_trigger {
+  input: KEY_LALT
+  action: "key_alt"
+}
+key_trigger {
+  input: KEY_RALT
+  action: "key_alt"
+}
+key_trigger {
+  input: KEY_F1
+  action: "key_f1"
+}
+key_trigger {
+  input: KEY_F2
+  action: "key_f2"
+}
+key_trigger {
+  input: KEY_F3
+  action: "key_f3"
+}
+key_trigger {
+  input: KEY_F4
+  action: "key_f4"
+}
+key_trigger {
+  input: KEY_F5
+  action: "key_f5"
+}
+key_trigger {
+  input: KEY_F6
+  action: "key_f6"
+}
+key_trigger {
+  input: KEY_F7
+  action: "key_f7"
+}
+key_trigger {
+  input: KEY_F8
+  action: "key_f8"
+}
+key_trigger {
+  input: KEY_F9
+  action: "key_f9"
+}
+key_trigger {
+  input: KEY_F10
+  action: "key_f10"
+}
+key_trigger {
+  input: KEY_F11
+  action: "key_f11"
+}
+key_trigger {
+  input: KEY_F12
+  action: "key_f12"
+}

@@ -1,0 +1,211 @@
+[project]
+title = SpireSmiths TCG
+version = 0.1.0
+write_log = 1
+compress_archive = 1
+publisher = Cazziuz Creations
+developer = Cazziuz Creations
+notes = A strategic trading card game built with Defold
+
+[bootstrap]
+main_collection = /main/main.collectionc
+render = /builtins/render/default.renderc
+
+[input]
+use_accelerometer = 0
+game_binding = /input/game.input_bindingc
+
+[display]
+width = 1280
+height = 720
+high_dpi = 1
+samples = 0
+vsync = 1
+variable_dt = 0
+
+[render]
+clear_color_red = 0.07
+clear_color_green = 0.07
+clear_color_blue = 0.10
+clear_color_alpha = 0
+
+[physics]
+type = 2D
+gravity_y = -1000
+debug = 0
+debug_alpha = 0.9
+world_count = 4
+gravity_x = 0
+gravity_z = 0
+scale = 0.02
+allow_dynamic_transforms = 1
+debug_scale = 30
+max_collisions = 64
+max_contacts = 128
+contact_impulse_limit = 0
+ray_cast_limit = 64
+ray_cast_limit_2d = 64
+trigger_overlap_capacity = 16
+
+[graphics]
+default_texture_min_filter = linear
+default_texture_mag_filter = linear
+max_draw_calls = 1024
+max_characters = 8192
+max_debug_vertices = 10000
+texture_profiles = /builtins/graphics/default.texture_profiles
+verify_graphics_calls = 1
+
+[shader]
+output_spirv = 0
+
+[sound]
+gain = 1.0
+max_sound_data = 128
+max_sound_buffers = 32
+max_sound_sources = 16
+max_sound_instances = 256
+max_component_count = 32
+use_thread = 1
+
+[resource]
+max_resources = 1024
+uri = 
+
+[network]
+http_timeout = 0
+ssl_certificates = 
+http_thread_count = 4
+http_cache_enabled = 1
+
+[collection]
+max_instances = 1024
+max_input_stack_entries = 16
+
+[sprite]
+max_count = 128
+subpixels = 1
+
+[tilemap]
+max_count = 16
+max_tile_count = 2048
+
+[spine]
+max_count = 64
+
+[gui]
+max_count = 64
+max_particlefx_count = 64
+max_font_count = 16
+
+[collection_factory]
+max_count = 128
+
+[factory]
+max_count = 128
+
+[ios]
+app_icon_120x120 = 
+app_icon_180x180 = 
+app_icon_76x76 = 
+app_icon_152x152 = 
+app_icon_57x57 = 
+app_icon_114x114 = 
+app_icon_72x72 = 
+app_icon_144x144 = 
+launch_screen = 
+pre_renderered_icons = 0
+bundle_identifier = com.cazziuz.spiresmiths
+info_plist = 
+podfile = 
+default_language = en
+localizations = en
+
+[android]
+app_icon_ldpi = 
+app_icon_mdpi = 
+app_icon_hdpi = 
+app_icon_xhdpi = 
+app_icon_xxhdpi = 
+app_icon_xxxhdpi = 
+package = com.cazziuz.spiresmiths
+gcm_sender_id = 
+manifest = 
+iap_provider = GooglePlay
+input_method = HiddenInputField
+immersive_mode = 0
+display_cutout = 1
+version_code = 1
+minimum_sdk_version = 19
+target_sdk_version = 33
+max_sdk_version = 
+debugger = 0
+proguard = 
+
+[osx]
+app_icon = 
+info_plist = 
+bundle_identifier = com.cazziuz.spiresmiths
+bundle_version = 1
+default_language = en
+localizations = en
+
+[windows]
+app_icon = 
+iap_provider = None
+
+[html5]
+heap_size = 256
+htmlfile = /builtins/manifests/web/engine_template.html
+cssfile = /builtins/manifests/web/light_theme.css
+archive_location_prefix = archive
+archive_location_suffix = 
+engine_arguments = --verify-graphics-calls=false
+show_fullscreen_button = 1
+show_made_with_defold = 1
+scale_mode = fit
+
+[particle_fx]
+max_count = 64
+max_emitter_count = 64
+max_particle_count = 1024
+
+[iap]
+auto_finish_transactions = 1
+
+[gamecenter]
+use_gamecenter = 0
+
+[push]
+ios = 0
+android = 0
+
+[facebook]
+require_player_id = 0
+app_id = 
+
+[engine]
+run_while_iconified = 0
+fixed_update_frequency = 60
+
+[profiler]
+track_cpu = 0
+
+[liveupdate]
+settings = /liveupdate.settings
+enabled = 0
+
+[label]
+max_count = 64
+subpixels = 1
+cache_width = 0
+cache_height = 0
+
+[basis_universal]
+texture_profiles = /builtins/graphics/basis_universal/texture_profiles
+
+[library]
+include_dirs = 
+
+[script]
+shared_state = 1
